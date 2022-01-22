@@ -8,12 +8,12 @@ using Xunit;
 
 namespace Sonol.UnitTests
 {
-    //TODO: Mock IDataService 
-    // somthing like 
+    //TODO: add Mock IDataService 
     //var DataServiceMock = new Mock<IDataService>()
     //
     public class DataServiceTests
     {
+        //Reason for not mocking was due to time constraints, and wanted the test to be as easy as possible
         
         [Fact]
         public void DataService_TranformReadEntriesToResponseEntries_ReturnScheduledEntryDto()
