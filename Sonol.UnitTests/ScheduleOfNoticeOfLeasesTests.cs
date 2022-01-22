@@ -13,11 +13,6 @@ namespace Sonol.UnitTests
 {
     public class ScheduleOfNoticeOfLeasesTests
     {
-        [Fact]
-        public void UnitOfWork_StateUnderTest_ExpectedBehaviour()
-        {
-
-        }
 
         [Fact]
         public void DataService_GetAndValidateData_ReturnTrue()

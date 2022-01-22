@@ -10,6 +10,7 @@ namespace Sonol.UnitTests
         [Fact]
         public void EntryTextExtension_MapRegistrationDateAndPlanRef_ReturnNonNullObject()
         {
+
              // Arrange
             var sutDataService = new DataService();
             var sutDataServiceResult = sutDataService.GenerateRecievedData();
@@ -47,7 +48,7 @@ namespace Sonol.UnitTests
             // Act
             var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnPropertyDescription();
 
-            //Assert
+            // Assert
             result.Should().NotBeNullOrWhiteSpace();
         }
 

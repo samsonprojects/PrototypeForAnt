@@ -8,6 +8,10 @@ using Xunit;
 
 namespace Sonol.UnitTests
 {
+    //TODO: Mock IDataService 
+    // somthing like 
+    //var DataServiceMock = new Mock<IDataService>()
+    //
     public class DataServiceTests
     {
         
@@ -22,7 +26,6 @@ namespace Sonol.UnitTests
 
             //Act
             var result = sutDataService.TransformReadEntriesToResponseEntriesDto(sampleEntries);
-            //var FirstEntryTextDtoResult =result[0];
             
             //Assert
             result.Should().HaveCountGreaterThan(0);
