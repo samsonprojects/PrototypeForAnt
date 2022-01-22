@@ -44,7 +44,7 @@ namespace Sonol.UnitTests
 
             // Assert
             result.Should().BeAssignableTo<ResponseScheduleOfNoticeOfLeasesDto>();
-            result.ScheduleEntry.Count().Should().Equals(data.leasesSchedule.ScheduleEntry.Count());
+            result.ScheduleEntry.Count().Should().Be(data.leasesSchedule.ScheduleEntry.Count());
             
 
         }
