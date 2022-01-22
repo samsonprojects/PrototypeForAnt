@@ -3,37 +3,15 @@ This exercise concentrates on a specific section of these documents known as the
 
 
 Plan:
+Test Driven Development for key features in order to provide self documenting code
 
-create API project
-getJsonResponse
-Deserialize JsonResponse to LeaseScheduleObject
-Validate the Schedule Entry within the LeaseScheduleObject is valid
-Create a schedule of notices of leasees object to represent the data for easier
-mapping purposes
-
-Creating A DataTransformationService to parse the data
-it expects a LeaseScheduleObject
-returns ScheduleOfNoticesOfLeases
-parsed into a collection of dictionaries
-which is a Dictionary<columnName,[strings]>
+How we might Host?
+Deploy the APi to Azure web services
 
 
+How to run:
+You can run the whole project via the following method in DataServiceTests
 
-Create a service 
-Method to Parse Entry text column
-transform columns into data points, create a class to represent the data
-class EntryText
-has a List<EntryTextData> which has the below
-list< class EntryTextItems>
-string note
+DataService_TransformScheduleOfNoticeOfLeasesData_ReturnResponseScheduleOfNoticeOfLeasesDto()
 
 
-Search by Column
-
-Registration date and plan ref,Property description,Date of lease and term,Lessee’s title
-
-http://localhost:8080/api/ScheduleOfNoticeLeases/1/columnname?
-
-
-Challenge:
-Using whatever approach you see fit, prototype a solution for structuring the Schedule of notices of lease data so that the column data and optional notes can be referenced independently.
