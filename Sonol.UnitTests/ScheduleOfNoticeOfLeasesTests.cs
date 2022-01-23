@@ -22,12 +22,12 @@ namespace Sonol.UnitTests
             var scheduleTypeName = "SCHEDULE OF NOTICES OF LEASES".ToLower();
             
             // Act
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
- sutDataServiceResult.Should().NotBeNull();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
+            sutDataServiceResult.Should().NotBeNull();
             // Assert
             
-            sutDataServiceResult.leasesSchedule.ScheduleType.ToLower().Should().Be(scheduleTypeName,"because they have the same values");
-            sutDataServiceResult.leasesSchedule.ScheduleEntry.Should().HaveCountGreaterThan(0);
+            sutDataServiceResult.leasesSchedule.scheduleType.ToLower().Should().Be(scheduleTypeName,"because they have the same values");
+            sutDataServiceResult.leasesSchedule.scheduleEntry.Should().HaveCountGreaterThan(0);
             
         }
 
@@ -36,7 +36,7 @@ namespace Sonol.UnitTests
         {
             // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
         
             // Act

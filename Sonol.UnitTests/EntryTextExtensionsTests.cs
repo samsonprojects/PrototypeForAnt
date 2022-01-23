@@ -13,10 +13,10 @@ namespace Sonol.UnitTests
 
              // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
             // Act
-            var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnRegistrationDateAndPlanRef();
+            var result = sutDataServiceResult.leasesSchedule.scheduleEntry[0].entryText.ReturnRegistrationDateAndPlanRef();
 
             //Assert
             result.Should().NotBeNullOrEmpty();
@@ -28,10 +28,10 @@ namespace Sonol.UnitTests
         {
              // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
             // Act
-            var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnNote();
+            var result = sutDataServiceResult.leasesSchedule.scheduleEntry[0].entryText.ReturnNote();
 
             //Assert
             result.Should().NotBeNullOrWhiteSpace();
@@ -43,10 +43,10 @@ namespace Sonol.UnitTests
         {
              // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
             // Act
-            var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnPropertyDescription();
+            var result = sutDataServiceResult.leasesSchedule.scheduleEntry[0].entryText.ReturnPropertyDescription();
 
             // Assert
             result.Should().NotBeNullOrWhiteSpace();
@@ -57,10 +57,10 @@ namespace Sonol.UnitTests
         {
              // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
             // Act
-            var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnLeaseTitle();
+            var result = sutDataServiceResult.leasesSchedule.scheduleEntry[0].entryText.ReturnLeaseTitle();
 
             //Assert
             result.Should().NotBeNullOrWhiteSpace();
@@ -72,10 +72,10 @@ namespace Sonol.UnitTests
         {
              // Arrange
             var sutDataService = new DataService();
-            var sutDataServiceResult = sutDataService.GenerateRecievedData();
+            var sutDataServiceResult = new DataFixture().GenerateRequestedData();
             
             // Act
-            var result = sutDataServiceResult.leasesSchedule.ScheduleEntry[0].EntryText.ReturnDateOfLeaseAndTerm();
+            var result = sutDataServiceResult.leasesSchedule.scheduleEntry[0].entryText.ReturnDateOfLeaseAndTerm();
 
             //Assert
             result.Should().NotBeNullOrWhiteSpace();

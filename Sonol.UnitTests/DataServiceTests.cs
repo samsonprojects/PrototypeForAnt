@@ -20,9 +20,9 @@ namespace Sonol.UnitTests
         {   
             //Arrange
             var sutDataService = new DataService();
-            var data= sutDataService.GenerateRecievedData();
+            var data = new DataFixture().GenerateRequestedData();
 
-            var sampleEntries = data.leasesSchedule.ScheduleEntry;
+            var sampleEntries = data.leasesSchedule.scheduleEntry;
 
             //Act
             var result = sutDataService.TransformReadEntriesToResponseEntriesDto(sampleEntries);
@@ -37,14 +37,14 @@ namespace Sonol.UnitTests
         {
             // Arrange
             var sutDataService = new DataService();
-            var data = sutDataService.GenerateRecievedData();
+            var data = new DataFixture().GenerateRequestedData();
 
             // Act
             var result = sutDataService.TransformScheduleOfNoticeOfLeasesData(data);
 
             // Assert
             result.Should().BeAssignableTo<ResponseScheduleOfNoticeOfLeasesDto>();
-            result.ScheduleEntry.Count().Should().Be(data.leasesSchedule.ScheduleEntry.Count());
+            result.ScheduleEntry.Count().Should().Be(data.leasesSchedule.scheduleEntry.Count());
             
 
         }
