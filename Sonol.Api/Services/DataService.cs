@@ -9,101 +9,22 @@ namespace Sonol.Api.Services
 {
     public class DataService :IDataService
     {
-        public RequestScheduleOfNoticeOfLeasesDto GenerateRecievedData()
+        //// This service would be injected into the controller 
+
+        public List<EntryDto> _EntriesRepo {get;set;}
+        public List<EntryTextDto> _EntriesTextRepo{get;set;}
+
+        public DataService()
         {
-
-            var NewLeasesSchedule = new LeasesSchedule()
-            {
-                ScheduleType = "SCHEDULE OF NOTICES OF LEASES",
-                ScheduleEntry = new List<Entries>()
-                {
-                    new Entries(){
-                        EntryNumber = "1",
-                        EntryDate = "",
-                        EntryType = "Schedule of Notices of Leases",
-                        EntryText= new List<string>()
-                        {
-                            "09.07.2009      Endeavour House, 47 Cuba      06.07.2009      EGL557357  ",
-                            "Edged and       Street, London                125 years from             ",
-                            "numbered 2 in                                 1.1.2009                   ",
-                            "blue (part of)",
-                            "NOTE: See entry in the Charges Register relating to a Deed of Rectification dated 26 January 2013"
-                        }
-                    },
-                    new Entries(){
-                        EntryNumber = "2",
-                        EntryDate = "",
-                        EntryType = "Schedule of Notices of Leases",
-                        EntryText= new List<string>()
-                        {
-                            "09.07.2009      Endeavour House, 47 Cuba      06.07.2009      EGL557357  ",
-                            "Edged and       Street, London                125 years from             ",
-                            "numbered 2 in                                 1.1.2009                   ",
-                            "blue (part of)"
-                        }
-                    },
-                    new Entries(){
-                        EntryNumber = "3",
-                        EntryDate = "",
-                        EntryType = "Schedule of Notices of Leases",
-                        EntryText= new List<string>()
-                        {
-                            "22.02.2010      Flat 2308 Landmark West       03.02.2010      EGL568130  ",
-                            "Edged and       Tower (twenty third floor     999 years from             ",
-                            "numbered 4 in   flat)                         1.1.2009                   ",
-                            "blue (part of)                                                           ",
-                            "NOTE: See entry in the Charges Register relating to a Deed of Rectification dated 26 January 2018"
-                        }
-                    },
-                    new Entries(){
-                        EntryNumber = "4",
-                        EntryDate = "",
-                        EntryType = "Schedule of Notices of Leases",
-                        EntryText= new List<string>()
-                        {
-                            "20.08.2010      Flat 2401 Landmark West       28.07.2010      EGL575743  ",
-                            "Edged and       Tower (twenty fourth floor    999 years from             ",
-                            "numbered 4 on   flat)                         1.1.2009                   ",
-                            "blue (part of)                                                           ",
-                            "NOTE: See entry in the Charges Register relating to a Deed of Variation dated 21 January 2015."
-                        }
-                    },
-                    new Entries(){
-                        EntryNumber = "5",
-                        EntryDate = "",
-                        EntryType = "Schedule of Notices of Leases",
-                        EntryText= new List<string>()
-                        {
-                            "20.08.2010      Flat 1803 Landmark West       08.07.2010      EGL575744  ",
-                            "Edged and       Tower (eighteenth floor       999 years from             ",
-                            "numbered 4 in   flat)                         1.1.2009                   ",
-                            "blue (part of)                                                           ",
-                            "NOTE: See entry in the Charges Register relating to a Deed of Variation dated 10 February 2012."
-                        }
-                    }
-                }
-
-                
-            };
-
-            var FormedDataObject = new RequestScheduleOfNoticeOfLeasesDto()
-                {leasesSchedule = NewLeasesSchedule};
-
-            var Options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonResult = JsonSerializer.Serialize(FormedDataObject, Options);
-            
-            //an automapped LeasesSchedule from the thin Controller
-            var DataResult = JsonSerializer.Deserialize<RequestScheduleOfNoticeOfLeasesDto>(jsonResult);
-            return DataResult;
-            
+            _EntriesTextRepo = new List<EntryTextDto>();
         }
-
         public ResponseScheduleOfNoticeOfLeasesDto TransformScheduleOfNoticeOfLeasesData(RequestScheduleOfNoticeOfLeasesDto RequestScheduleOfNoticeOfLeasesDto)
         {
             var responseScheduledOfNoticeLeasesDto = new ResponseScheduleOfNoticeOfLeasesDto();
-            responseScheduledOfNoticeLeasesDto.ScheduleType = RequestScheduleOfNoticeOfLeasesDto.leasesSchedule.ScheduleType;
-            responseScheduledOfNoticeLeasesDto.ScheduleEntry = TransformReadEntriesToResponseEntriesDto(RequestScheduleOfNoticeOfLeasesDto.leasesSchedule.ScheduleEntry);
+            responseScheduledOfNoticeLeasesDto.ScheduleType = RequestScheduleOfNoticeOfLeasesDto.leasesSchedule.scheduleType;
+            responseScheduledOfNoticeLeasesDto.ScheduleEntry = TransformReadEntriesToResponseEntriesDto(RequestScheduleOfNoticeOfLeasesDto.leasesSchedule.scheduleEntry);
             
+
             return responseScheduledOfNoticeLeasesDto;
         }
 
@@ -114,18 +35,61 @@ namespace Sonol.Api.Services
             {
                 var CurrentEntryDto = new EntryDto();
                 var CurrentRequestEntry = RequestEntries[index];
-                CurrentEntryDto.EntryDate = CurrentRequestEntry.EntryDate;
-                CurrentEntryDto.EntryNumber = CurrentRequestEntry.EntryNumber;
-                CurrentEntryDto.EntryType = CurrentRequestEntry.EntryType;
+                if(CurrentRequestEntry != null)
+                {
+                    CurrentEntryDto.EntryDate = CurrentRequestEntry.entryDate;
+                    CurrentEntryDto.EntryNumber = CurrentRequestEntry.entryNumber;
+                    CurrentEntryDto.EntryType = CurrentRequestEntry.entryType;
 
-                CurrentEntryDto.EntryTexts =  MapToEntryTextDto(CurrentRequestEntry.EntryText);
-                ResultEntryTextDtos.Add(CurrentEntryDto);
+                    CurrentEntryDto.EntryTexts =  MapToEntryTextDto(CurrentRequestEntry.entryText);
+                    ResultEntryTextDtos.Add(CurrentEntryDto);
+
+                    //TODO: Must create a get all entriesdto  method when time permits
+                    //Creating a simple entries repo so easier to search
+                    //_EntriesRepo.AddRange(ResultEntryTextDtos);
+                    _EntriesTextRepo.Add(CurrentEntryDto.EntryTexts);
+                }
 
             }
 
             return ResultEntryTextDtos;
 
         }
+
+        public EntryTextDto GetEntryByColumnName(string ColumnName,string Text)
+        {
+            var EntryTextDtoSearchResult = new EntryTextDto();
+            if(ColumnName == "Note")
+            {
+                EntryTextDtoSearchResult = _EntriesTextRepo
+                    .SingleOrDefault(n => !string.IsNullOrEmpty(n.Note) && n.Note.ToLower().Trim() == Text.ToLower().Trim());
+                
+            }
+            else if(ColumnName == "PropertyDescription")
+            {
+                EntryTextDtoSearchResult = _EntriesTextRepo
+                    .SingleOrDefault(n => !string.IsNullOrEmpty(n.PropertyDescription) && n.PropertyDescription.ToLower().Trim() == Text.ToLower().Trim());
+            }
+            else if(ColumnName == "LeaseTitle")
+            {
+                EntryTextDtoSearchResult = _EntriesTextRepo
+                    .SingleOrDefault(n => !string.IsNullOrEmpty(n.LeaseTitle) && n.LeaseTitle.ToLower().Trim() == Text.ToLower().Trim());
+            }
+            else if(ColumnName == "DateOfLeaseAndTerm")
+            {
+                EntryTextDtoSearchResult = _EntriesTextRepo
+                    .SingleOrDefault(n => !string.IsNullOrEmpty(n.DateOfLeaseAndTerm) && n.DateOfLeaseAndTerm.ToLower().Trim() == Text.ToLower().Trim());
+            }
+            //has to be Registration date and plan ref
+            else
+            {
+                EntryTextDtoSearchResult = _EntriesTextRepo
+                    .SingleOrDefault(n => !string.IsNullOrEmpty(n.RegistrationDateAndPlanRef) && n.RegistrationDateAndPlanRef.ToLower().Trim() == Text.ToLower().Trim());
+            }
+
+            return EntryTextDtoSearchResult;
+        } 
+
         private EntryTextDto MapToEntryTextDto(List<string> EntryText)
         {
             var EntryResults = new EntryTextDto();

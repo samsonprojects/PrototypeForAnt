@@ -6,13 +6,13 @@ namespace Sonol.Api.Models
     public class Entries
     {
 
-        public string EntryNumber { get; set; }
+        public string entryNumber { get; set; }
 
-        public string EntryDate { get; set; }
+        public string entryDate { get; set; }
 
-        public string EntryType { get; set; }
+        public string entryType { get; set; }
 
-        public List<string> EntryText { get; set; }
+        public List<string> entryText { get; set; }
     }
 
 

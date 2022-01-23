@@ -6,9 +6,11 @@ namespace Sonol.Api.Services
 {
     public interface IDataService
     {
-         RequestScheduleOfNoticeOfLeasesDto GenerateRecievedData();
+         List<EntryDto> _EntriesRepo {get;set;}
+         List<EntryTextDto> _EntriesTextRepo{get;set;}
          ResponseScheduleOfNoticeOfLeasesDto TransformScheduleOfNoticeOfLeasesData(RequestScheduleOfNoticeOfLeasesDto scheduleOfNoticeOfLeasesDto);
 
          List<EntryDto> TransformReadEntriesToResponseEntriesDto(List<Entries> RequestEntries);
+         EntryTextDto GetEntryByColumnName(string ColumnName,string Text);
     }
 }

@@ -8,4 +8,11 @@ namespace Sonol.Api.Dtos
         public string ScheduleType{get;set;}
         public List<EntryDto> ScheduleEntry {get;set;}
     }
+
+
+    public class ResponseRootLeasesScheduleDto
+    {
+        public List<ResponseScheduleOfNoticeOfLeasesDto> LeasesSchedules{get;set;}
+
+    }
 }

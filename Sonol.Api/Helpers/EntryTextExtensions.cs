@@ -14,7 +14,7 @@ namespace Sonol.Api.Helpers
             var RowCount = 0;
             for(int index = 0; index < rows.Count; index ++)
             {   
-                var CurrentEntryTextRow = rows[index];
+                var CurrentEntryTextRow = CleanLine(rows[index]);
                 var Line = CurrentEntryTextRow.Split("     ").ToList();
                 var CleanedTextListResult = Line.RemoveAll(x=> string.IsNullOrWhiteSpace(x));
                 //handles first section
@@ -32,20 +32,19 @@ namespace Sonol.Api.Helpers
 
         public static string  ReturnNote(this List<string> rows)
         {
-            var Note= "";
-
             for(int index = 0; index < rows.Count; index ++)
             {   
-                var CurrentEntryTextRow = rows[index];
+                var CurrentEntryTextRow = CleanLine(rows[index]);
                 if(CurrentEntryTextRow.ToLower().Contains("note:"))
                 {
                     var texts = CurrentEntryTextRow.Split(':').ToList();
-                    Note= texts[1];
+                    var noteText = texts[1];
+                    return noteText;
                 }
 
             }
 
-            return Note;
+            return null;
         }
 
 
@@ -55,10 +54,10 @@ namespace Sonol.Api.Helpers
             var rowcount = 0;
             for(int index = 0; index < rows.Count; index ++)
             {   
-                var CurrentEntryTextRow = rows[index];
+                var CurrentEntryTextRow = CleanLine(rows[index]);
                 
                 var line = CurrentEntryTextRow.Split("     ").ToList();
-                if(rowcount < 2)
+                if(rowcount < 2 && line.Count() > 1)
                 {
                     propertyDescription.Append(line[1]+ " "); 
                 }
@@ -80,12 +79,12 @@ namespace Sonol.Api.Helpers
             var RowCount = 0;
             for(int index = 0; index < rows.Count; index ++)
             {   
-                var CurrentEntryTextRow = rows[index];
+                var CurrentEntryTextRow = CleanLine(rows[index]);
                 
                 var line = CurrentEntryTextRow.Split("     ").ToList();
                 if(RowCount == 0)
                 {
-                    LeaseTitle = line[3].Trim();
+                    LeaseTitle = line[line.Count-1].Trim();
                 }
                 
                 RowCount+= 1;
@@ -94,21 +93,63 @@ namespace Sonol.Api.Helpers
             return LeaseTitle;
         }
 
+        public static string CleanLine(this string line)
+        {
+            if(string.IsNullOrEmpty(line))
+            {
+                return "";
+            }
+            return line;
+        }
+
+
+        public static string CleanLeaseAndTermDateRow(this List<string> Line,int row)
+        {
+            if (Line.Count() > 1 && row == 0)
+            {
+                return Line[2];
+            }
+            else if(row == 0)
+            {
+                return Line[Line.Count -1];
+            }
+            
+            // Regex Reg =  new Regex(@"(\d+)[.](\d+)[.](\d+)");
+            // var MatchTry = Reg.Match(Line);
+            // if(MatchTry.Success)
+            // {
+
+            // }
+            return "";
+        }
         public static string ReturnDateOfLeaseAndTerm(this List<string> rows)
         {
             var LeaseTitle= new StringBuilder();
              var RowCount = 0;
             for(int index = 0; index < rows.Count; index ++)
             {   
-                var CurrentEntryTextRow = rows[index];
-                var Line = CurrentEntryTextRow.Split("     ").ToList();
+                var CurrentEntryTextRow = CleanLine(rows[index]);
+                var Line =  CurrentEntryTextRow.Split("  ").ToList();
 
-                //var Test = Regex.Split(CurrentEntryTextRow, "(?i) (?![a-z])");
                 var LeaseTitleList = Line.RemoveAll(x=> string.IsNullOrWhiteSpace(x));
                 //handles first section
-                if(RowCount < 1)
+                if(RowCount < 1 && Line.Count()> 1)
                 {
-                    LeaseTitle.Append(Line[2]); 
+                    var ParsedLeaseTitleLine= "";
+                        if(RowCount == 0 && Line.Count == 2)
+                        {
+                            //get last element in this scenario
+                            ParsedLeaseTitleLine = Line[1];
+                        }
+                        else if (Line.Count() > 1 && RowCount == 0)
+                        {
+                            ParsedLeaseTitleLine = Line[2];
+                        }                        
+                        else if(RowCount == 0)
+                        {
+                            ParsedLeaseTitleLine = Line[Line.Count -1];
+                        }
+                    LeaseTitle.Append(ParsedLeaseTitleLine +" "); 
                 }
                 else if(RowCount == 1)
                 {   //handles second section¬
